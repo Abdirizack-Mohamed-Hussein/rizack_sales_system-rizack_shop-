@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+    <div class="form-content">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Welcome To Dashboard</h1>
+                <p class="dashboard-date" id="current-date"></p>
+            </div>
+            
+            <div class="card total-sales">
+                <div class="card-body">
+                    <h2 class="card-title">Total Sales</h2>
+                    <h3 class="card-subtitle mb-2 text-muted" id="total-sales-value"></h3>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-container">
+                    <canvas id="bar-chart" width="100%" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="line-chart" width="100%" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    // Data for charts 
+    const p_name = {{ p_name | safe }};
+    const p_profit = {{ p_profit | safe }};
+    const quantity = {{ quantity | safe }};
+    const date = {{ date | safe }};
+    const date_profit = {{ date_profit | safe }};
+
+    // Calculate total sales
+    let totalSales = 0;
+    quantity.forEach(amount => {
+        totalSales += amount;
+    });
+
+    // Update total sales display
+    document.getElementById('total-sales-value').innerText = totalSales.toFixed(2); // Assuming sales are in Ksh
+
+    // Update current date and time
+    function updateCurrentDate() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    updateCurrentDate(); // Initial call
+    setInterval(updateCurrentDate, 1000); // Update every second
+</script>
+
+<script>
+    // Bar chart
+    new Chart(document.getElementById("bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: p_name,
+            datasets: [{
+                label: "Profit per Product (Ksh)",
+                backgroundColor: "#3e95cd",
+                data: p_profit
+            }, {
+                label: "Sales per Product (Ksh)",
+                backgroundColor: "#8e5ea2",
+                data: quantity
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: 'Profit and Sales per Product',
+                fontSize: 18,
+                fontColor: '#333'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function(value) { return 'Ksh ' + value; }
+                    }
+                }]
+            }
+        }
+    });
+
+    // Line chart
+    new Chart(document.getElementById("line-chart"), {
+        type: 'line',
+        data: {
+            labels: date,
+            datasets: [{ 
+                data: date_profit,
+                label: "Profit per Day (Ksh)",
+                borderColor: "#3e95cd",
+                fill: false
+            }, { 
+                data: quantity,
+                label: "Sales per Day (Ksh)",
+                borderColor: "#8e5ea2",
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: 'Sales and Profit Trends',
+                fontSize: 18,
+                fontColor: '#333'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function(value) { return 'Ksh ' + value; }
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+<style>
+    
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    
+    .form-wrapper {
+        background-color: #343a40; /* Dark background color */
+        color: #fff; /* White text color */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    /* Form content styles */
+    .form-content {
+        padding: 20px;
+    }
+
+    /* Dashboard container styles */
+    .dashboard-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+
+    /* Dashboard header styles */
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-date {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.7); /* Lighter white text color */
+    }
+
+    /* Card styles */
+    .card {
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .card-subtitle {
+        font-size: 18px;
+        color: #666;
+    }
+
+    /* Charts container and chart container styles */
+    .charts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .chart-container {
+        width: calc(50% - 20px);
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Adjustments for smaller screens */
+    @media (max-width: 768px) {
+        .chart-container {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

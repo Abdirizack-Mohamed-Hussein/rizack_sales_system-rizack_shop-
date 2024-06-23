@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+
+    <title>{% block title %} Rizack {% endblock %}</title>
+</head>
+{% block navbar %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" style="background-color: rgba(0, 123, 255, 0.5)">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" style="color: orange; font-size: 30px; margin-right: -2px;">Rizack</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                {% if 'email' in session %}
+                {% if request.path not in [url_for('home'), url_for('products'), url_for('sales'), url_for('dashboard')]
+                %}
+                <li class="nav-item">
+                    <a class="nav-link active " aria-current="page" href="/home">Home</a>
+                </li>
+                {% endif %}
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Sales">Sales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/Account" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if 'email' in session %}
+                        {% if request.path != url_for('home') %}
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout <i
+                                    class="fa-solid fa-user"></i></a></li>
+                        {% endif %}
+                        {% else %}
+                        <li><a class="dropdown-item" href="/Register">Register <i
+                                    class="fa-solid fa-right-from-bracket"></i></a>
+                        </li>
+                        <li><a class="dropdown-item" href="/Login">Login <i
+                                    class="fa-solid fa-right-to-bracket"></i></a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+<!-- Content block -->
+<div class="content">
+    {% block content %}
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center " data-aos="zoom-out">
+                    <h1 class="">Welcome to Rizack: The Ultimate Point of Sale System for Your Business</h1>
+                    <p class="">Streamline Your Sales and Boost Your Business Efficiency</p>
+                    <div class="d-flex">
+                        <a href="/Register" class="btn-get-started">Get Started</a>
+
+                    </div>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
+                    <img src="/static/images/hero-img.png" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Hero Section -->
+
+    {% endblock %}
+
+    <footer class="container-fluid  text-center p-2 mt-5" style="background-color: orange; color: white;">
+        <a href="#" style="color: white;" class="text-decoration-none">Abdirizack</a> | <span>
+            <i class="fa-sharp fa-regular fa-copyright"></i></span> 2024 All rights reserved
+
+    </footer>
+
+    <!-- Bootstrap JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/static/js/all.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/myScript.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script> let table = new DataTable('#myTable');</script>
+
+    </body>
+
+</html>

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+
+
+<style>
+    .form-container {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    max-width: 400px;
+    margin-top: 10px; /* Adjust as needed */
+}
+
+.signup-body {
+    margin-top: 2px;
+}
+</style>
+<!-- Register section start -->
+<div class="container">
+    <div class="form-container">
+        <header class="signup-header">
+            <h1 class="text-black text-center">
+                Create Account
+            </h1>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            {% endwith %}
+        </header>
+        <main class="signup-body">
+            <form action="/Register" method="post" class="register-form">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Type Name Here" name="full_name" required>
+                    <div class="invalid-feedback">Please provide your full name.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="xyz@gmail.com" name="email" required>
+                    <div class="invalid-feedback">Please provide a valid email address.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="At least 8 characters" name="password" required>
+                    <div class="invalid-feedback">Password must be at least 8 characters long.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+        </main>
+        <footer class="signup-footer text-center">
+            <p>Already have an account? <a href="/Login">Login</a></p>
+        </footer>
+    </div>
+</div>
+{% endblock %}

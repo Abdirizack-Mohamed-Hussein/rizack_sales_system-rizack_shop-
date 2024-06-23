@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+ <style>
+    .container{border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    max-width: 400px;
+    margin-top: 10px; 
+
+    }
+ </style>
+<div class="container">
+    <div class="box">
+        <header class="signup-header">
+            <h1>Login Form</h1>
+
+            {% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+  <div class="alert alert-primary  alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+    
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+          
+        </header>
+        <main class="signup-body">
+            <form action="/Login" method="post">
+             
+             <p>
+                    <label for="email" class="text-primary">Email</label>
+                    <input type="email" placeholder="xyz@gmail.com" name="email" />
+                    <i class="fa-solid"></i>
+                    <span id="emailError"></span>
+                </p>
+                <p>
+                    <label for="password" class="text-primary">Password</label>
+                    <input type="password" placeholder="at least 8 characters" name="password" />
+                    <i class="fa-solid"></i>
+                    <span id="passError"></span>
+                </p>
+                <p>
+                    <input type="submit" value="Login" id="submitBtn" />
+                </p>
+            </form>
+            
+        </main>
+        
+    </div>
+</div>
+
+{% endblock %}
